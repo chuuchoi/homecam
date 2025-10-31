@@ -27,7 +27,7 @@ export default function Home() {
 
 const LoginForm = ({actionData, setIsFindPW} : any)=>{
   return(
-    <Form method="post" className="bg-neutral-900 p-8 rounded-[8px] flex flex-col gap-4">
+    <Form method="post" className="bg-neutral-900 p-8 rounded-lg flex flex-col gap-4">
     <h1>로그인</h1>
     <input className="inputS0"
      name="id" type="text" placeholder="이메일" />
@@ -36,7 +36,7 @@ const LoginForm = ({actionData, setIsFindPW} : any)=>{
     {actionData?.message && <p className="text-red-500">{actionData.message}</p>}
     <span className="cursor-pointer text-end text-neutral-300"
       onClick={()=>setIsFindPW(true)}>비밀번호를 잊으셨나요?</span>
-    <button type="submit" className="cursor-pointer bg-blue-600 p-2 rounded-[8px]" >로그인</button>
+    <button type="submit" className="cursor-pointer bg-blue-600 p-2 rounded-lg" >로그인</button>
     <div className="flex flex-col gap-2">
 
     <span className="cursor-default text-neutral-300 text-center">아직 계정이 없으신가요?</span>
@@ -48,12 +48,12 @@ const LoginForm = ({actionData, setIsFindPW} : any)=>{
 
 const FindPW = ({setIsFindPW} : any)=>{
   return(
-    <Form method="post" action="/find-pw" className="bg-neutral-900 p-8 rounded-[8px] flex flex-col gap-4">
+    <Form method="post" action="/find-pw" className="bg-neutral-900 p-8 rounded-lg flex flex-col gap-4">
       <h1 className="cursor-pointer"
       onClick={()=>setIsFindPW(false)}>&lt; 비밀번호 찾기</h1>
       <input className="inputS0"
         name="id" type="text" placeholder="이메일" />
-      <button type="submit" className="cursor-pointer bg-blue-600 p-2 rounded-[8px]" >비밀번호 찾기</button>
+      <button type="submit" className="cursor-pointer bg-blue-600 p-2 rounded-lg" >비밀번호 찾기</button>
     </Form>
   )
 }

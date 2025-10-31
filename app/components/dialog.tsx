@@ -5,9 +5,7 @@ import { useAppStore } from "~/store/useAppStore";
 
 export function Confirm(){
   const isMobile = useIsMobile()
-  // Oops! Cannot read properties of null (reading 'useContext') TypeError: Cannot read properties of null (reading 'useContext')
-  // useContext Err Prevent
-  const confirmData = typeof window !== "undefined" ? useAppStore((state) => state.confirm) : null;
+  const confirmData = useAppStore((state) => state.confirm);
 
   useEffect(()=>{
     if(!confirmData){
@@ -134,7 +132,7 @@ export function Confirm(){
 };
 
 export function Alert(){
-  const alertData = typeof window !== "undefined" ? useAppStore((state) => state.alert) : null;
+  const alertData = useAppStore((state) => state.alert);
 
   if(!alertData) return null //alert 창 없으면 렌더링 안 함
 

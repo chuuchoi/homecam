@@ -187,7 +187,7 @@ function PayoutRequestItem({
       <img
         src={userImage}
         alt="User"
-        className="w-8 h-8 rounded-full object-cover mr-3 flex-shrink-0"
+        className="w-8 h-8 rounded-full object-cover mr-3 shrink-0"
       />
       <p className="flex-1 text-sm text-gray-800 truncate">{email}</p>
       <button className="bg-blue-500 text-white text-xs px-3 py-1 rounded-full hover:bg-blue-600 ml-2">

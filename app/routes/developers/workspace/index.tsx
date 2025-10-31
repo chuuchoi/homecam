@@ -59,7 +59,7 @@ export default function Home() {
               </Link>
             </div>
         </div>
-        <div className="border-1 border-blue-700 rounded-lg flex-1 w-4/5 min-h-96 flex justify-center items-center">
+        <div className="border border-blue-700 rounded-lg flex-1 w-4/5 min-h-96 flex justify-center items-center">
             <div className="text-gray-400 text-lg">
               {/* You can render a list of models here later */}
               {models.length > 0 ?

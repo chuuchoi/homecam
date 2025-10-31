@@ -70,7 +70,7 @@ function InquiryItem({ userImage, text }: any) {
       <img
         src={userImage}
         alt="User"
-        className="w-8 h-8 rounded-full object-cover mr-3 flex-shrink-0"
+        className="w-8 h-8 rounded-full object-cover mr-3 shrink-0"
       />
       <p className="flex-1 text-sm text-gray-800 truncate">{text}</p>
       {/* <ChevronRightIcon className="h-4 w-4 text-gray-400 ml-2 flex-shrink-0" /> */}
@@ -111,7 +111,7 @@ function InquiryList() {
 function PopularModelItem({ name, description, rating }: any) {
   return (
     <div className="flex items-center py-3 border-b border-gray-100 last:border-b-0">
-      <div className="flex-shrink-0 w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center text-gray-600 font-bold mr-3">
+      <div className="shrink-0 w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center text-gray-600 font-bold mr-3">
         로고
       </div>
       <div className="flex-1">

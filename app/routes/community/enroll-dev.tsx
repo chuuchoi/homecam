@@ -40,7 +40,7 @@ function TermsAndConditions({ onNext }: { onNext: () => void }) {
               checked={agreed}
               onChange={() => setAgreed(!agreed)}
             />
-            <div className={cn("h-5 w-5 text-blue-600 rounded mr-2 border-1 border-blue-600 focus:ring-blue-500"
+            <div className={cn("h-5 w-5 text-blue-600 rounded mr-2 border border-blue-600 focus:ring-blue-500"
             ,agreed&& "bg-neutral-50"
             )}>
               {agreed&&

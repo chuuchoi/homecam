@@ -196,7 +196,7 @@ function ModelUploadAndPricing({ onComplete }: any) {
                 onChange={() => setIsPaid(false)}
                 className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-600 bg-gray-700"
               />
-              <div className={cn("mr-3 h-5 w-5 text-blue-600 rounded border-1 border-blue-600 focus:ring-blue-500"
+              <div className={cn("mr-3 h-5 w-5 text-blue-600 rounded border border-blue-600 focus:ring-blue-500"
               ,!isPaid&& "bg-neutral-50"
               )}>
                 {!isPaid&&
@@ -220,7 +220,7 @@ function ModelUploadAndPricing({ onComplete }: any) {
                 onChange={() => setIsPaid(true)}
                 className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-600 bg-gray-700"
               />
-              <div className={cn("mr-3 h-5 w-5 text-blue-600 rounded border-1 border-blue-600 focus:ring-blue-500"
+              <div className={cn("mr-3 h-5 w-5 text-blue-600 rounded border border-blue-600 focus:ring-blue-500"
               ,isPaid&& "bg-neutral-50"
               )}>
                 {isPaid&&

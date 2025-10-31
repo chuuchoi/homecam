@@ -166,7 +166,7 @@ export default function AdminDevelopers() {
                 <img
                   src={developer.imageUrl}
                   alt="User"
-                  className="w-8 h-8 rounded-full object-cover mr-3 flex-shrink-0 bg-gray-200"
+                  className="w-8 h-8 rounded-full object-cover mr-3 shrink-0 bg-gray-200"
                 />
                 <p className="flex-1 text-sm text-gray-800 truncate">
                   {developer.email}
