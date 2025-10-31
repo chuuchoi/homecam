@@ -21,7 +21,7 @@ export default function CountryDownloadChart() {
   return (
     <div className="h-64"> {/* 차트의 높이를 조절할 수 있습니다 */}
       <h2 className="text-lg font-bold text-gray-800 mb-4">국가별 다운로드</h2>
-      <ResponsiveContainer width="100%" height="100%">
+      <ResponsiveContainer width="100%" height="100%" initialDimension={{width:320, height:200}}>
         <BarChart
           data={dummyCountryData}
           margin={{

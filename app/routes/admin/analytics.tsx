@@ -67,7 +67,7 @@ export default function AdminAnalytics() {
           <h2 className="text-lg font-bold text-gray-800 mb-12">매출</h2>
           {/* 매출 차트 */}
           <div className="h-32"> {/* 차트 높이 설정 */}
-            <ResponsiveContainer width="100%" height="100%">
+            <ResponsiveContainer width="100%" height="100%" initialDimension={{width:320, height:200}}>
               <LineChart
                 data={salesData}
                 margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
@@ -94,7 +94,7 @@ export default function AdminAnalytics() {
           <h2 className="text-lg font-bold text-gray-800 mb-12">가입자 수</h2>
           {/* 가입자 수 차트 */}
           <div className="h-32"> {/* 차트 높이 설정 */}
-            <ResponsiveContainer width="100%" height="100%">
+            <ResponsiveContainer width="100%" height="100%" initialDimension={{width:320, height:200}}>
               <LineChart
                 data={salesData}
                 margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
@@ -124,7 +124,7 @@ export default function AdminAnalytics() {
           <h2 className="text-lg font-bold text-gray-800 mb-12">모델 다운로드 수</h2>
           {/* 모델 다운로드 수 차트 */}
           <div className="h-32"> {/* 차트 높이 설정 */}
-            <ResponsiveContainer width="100%" height="100%">
+            <ResponsiveContainer width="100%" height="100%" initialDimension={{width:320, height:200}}>
               <LineChart
                 data={salesData}
                 margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
@@ -151,7 +151,7 @@ export default function AdminAnalytics() {
           <h2 className="text-lg font-bold text-gray-800 mb-12">국가별 다운로드 수</h2>
           {/* 국가별 다운로드 수 차트 */}
           <div className="h-32"> {/* 차트 높이 설정 */}
-          <ResponsiveContainer width="100%" height="100%">
+          <ResponsiveContainer width="100%" height="100%" initialDimension={{width:320, height:200}}>
             <BarChart
               data={dummyCountryData}
               margin={{

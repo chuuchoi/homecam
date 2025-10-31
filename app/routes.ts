@@ -15,6 +15,10 @@ export default [
   // apiRoute("api/rooms/:id", { loader: roomLoader, action: roomAction }),
   // apiRoute("api/rooms/:id/availability", { loader: roomLoader }),
 
+// 👇 User-Agent 기반 redirect 먼저
+layout("routes/redirect_mobile.tsx",[
+
+
   layout("./layout/header.tsx",[
     index("routes/index.tsx"),
     route("store", "routes/store.tsx"),
@@ -86,6 +90,7 @@ export default [
     ]),
   ]),
 
-  
+]),
+  route("/m/*", "redirect_mobile.tsx"),
   route("*", "not-found.tsx"),
 ] satisfies RouteConfig

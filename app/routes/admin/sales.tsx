@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import { useOutletContext } from "react-router";
 import {
@@ -9,6 +10,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts"; // Recharts 컴포넌트 임포트
+import { LoadingSpinner } from "~/components/LoadingSpinner";
 
 export function meta() {
   return [
@@ -38,6 +40,13 @@ const salesData = [
 export default function AdminSales() {
   const { search } = useOutletContext<{ search: string }>();
 
+  const [chartData, setChartData] = useState<{name: string, uv: number}[]>()
+  useEffect(()=>{
+    setTimeout(() => {
+      
+      setChartData(salesData)
+    }, 3000);
+  },[chartData])
   return (
     <div className="min-h-[calc(100vh-165px)] bg-[#F1F2F7] p-8">
       {/* search: {search} */}
@@ -75,9 +84,10 @@ export default function AdminSales() {
           </div>
           {/* 매출 차트 */}
           <div className="h-32"> {/* 차트 높이 설정 */}
-            <ResponsiveContainer width="100%" height="100%">
+          {(chartData && chartData.length > 0) ?
+            <ResponsiveContainer width="100%" height="100%" initialDimension={{width:320, height:200}}>
               <LineChart
-                data={salesData}
+                data={chartData}
                 margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
               >
                 {/* 배경 그리드는 이미지에 없으므로 주석 처리 또는 제거 */}
@@ -94,6 +104,9 @@ export default function AdminSales() {
                 />
               </LineChart>
             </ResponsiveContainer>
+            :
+            <LoadingSpinner style={{width:"100%", height:"100%"}} />
+          }
           </div>
         </div>
 

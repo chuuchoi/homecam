@@ -1,11 +1,13 @@
 // app/components/dialog.tsx
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useIsMobile } from "~/hooks/commons";
 import { useAppStore } from "~/store/useAppStore";
 
 export function Confirm(){
   const isMobile = useIsMobile()
-  const confirmData = useAppStore((state) => state.confirm);
+  // Oops! Cannot read properties of null (reading 'useContext') TypeError: Cannot read properties of null (reading 'useContext')
+  // useContext Err Prevent
+  const confirmData = typeof window !== "undefined" ? useAppStore((state) => state.confirm) : null;
 
   useEffect(()=>{
     if(!confirmData){
@@ -132,7 +134,7 @@ export function Confirm(){
 };
 
 export function Alert(){
-  const alertData = useAppStore((state) => state.alert)
+  const alertData = typeof window !== "undefined" ? useAppStore((state) => state.alert) : null;
 
   if(!alertData) return null //alert 창 없으면 렌더링 안 함
 

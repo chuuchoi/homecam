@@ -2,6 +2,11 @@ import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 // import { route } from "@react-router/dev/routes";
 
+export function isMobileUserAgent(ua: string) {
+  const lowerUA = ua.toLowerCase();
+  return /mobile|iphone|ipod|android.*mobile|windows phone|ipad|tablet/i.test(lowerUA);
+}
+
 /**
  * 조건부 클래스 병합 함수
  * 
