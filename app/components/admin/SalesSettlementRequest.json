@@ -1,0 +1,96 @@
+[
+  {
+    "id": 1,
+    "requestDate": "2025-07-03",
+    "account": "jeongwoo.ahn@byanna.io",
+    "requestedAmount": 100000,
+    "commission": 30000,
+    "finalAmount": 70000,
+    "details": [
+      {
+        "item": "감자모델1",
+        "requestedAmount": 30000,
+        "commission": 9000,
+        "finalAmount": 21000
+      },
+      {
+        "item": "감자모델2",
+        "requestedAmount": 40000,
+        "commission": 12000,
+        "finalAmount": 28000
+      },
+      {
+        "item": "감자모델3",
+        "requestedAmount": 30000,
+        "commission": 9000,
+        "finalAmount": 21000
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "requestDate": "2025-07-03",
+    "account": "jeongwoo.ahn1@byanna.io",
+    "requestedAmount": 100000,
+    "commission": 30000,
+    "finalAmount": 70000,
+    "details": [
+      {
+        "item": "카메라 대여",
+        "requestedAmount": 50000,
+        "commission": 15000,
+        "finalAmount": 35000
+      },
+      {
+        "item": "소프트웨어 구독",
+        "requestedAmount": 50000,
+        "commission": 15000,
+        "finalAmount": 35000
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "requestDate": "2025-07-03",
+    "account": "jeongwoo.ahn2@byanna.io",
+    "requestedAmount": 100000,
+    "commission": 30000,
+    "finalAmount": 70000,
+    "details": [
+      {
+        "item": "사진 인화 서비스",
+        "requestedAmount": 20000,
+        "commission": 6000,
+        "finalAmount": 14000
+      },
+      {
+        "item": "앨범 제작",
+        "requestedAmount": 80000,
+        "commission": 24000,
+        "finalAmount": 56000
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "requestDate": "2025-07-03",
+    "account": "jeongwoo.ahn3@byanna.io",
+    "requestedAmount": 100000,
+    "commission": 30000,
+    "finalAmount": 70000,
+    "details": [
+      {
+        "item": "렌즈 판매",
+        "requestedAmount": 70000,
+        "commission": 21000,
+        "finalAmount": 49000
+      },
+      {
+        "item": "배터리 구매",
+        "requestedAmount": 30000,
+        "commission": 9000,
+        "finalAmount": 21000
+      }
+    ]
+  }
+]

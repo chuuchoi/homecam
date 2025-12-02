@@ -1,10 +1,9 @@
 // app/routes/login.tsx
 import { Form, Link, useActionData } from "react-router";
-import type { Route } from "./+types/login";
 import { loginAction } from "~/actions/login";
 import { useState } from "react";
 
-export function meta({}: Route.MetaArgs) {
+export function meta({}) {
   return [
     { title: "홈캠 로그인" },
     { name: "description", content: "Home Cam Login" },

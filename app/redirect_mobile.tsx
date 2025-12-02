@@ -7,7 +7,8 @@ import { isMobileUserAgent } from "~/lib/utils";
 export async function loader({ request }: LoaderFunctionArgs) {
   const ua = request.headers.get("user-agent") || "";
   const url = new URL(request.url);
-
+  // console.log('redirect-mobile.tsx')
+  // console.log(ua)
 if (isMobileUserAgent(ua) && !url.pathname.startsWith("/m")) {
   // 모바일인데 /m 이 아닌 경우 -> /m/... 으로 이동
   url.pathname = "/m" + url.pathname;
@@ -15,7 +16,6 @@ if (isMobileUserAgent(ua) && !url.pathname.startsWith("/m")) {
 }
 
 if (!isMobileUserAgent(ua) && url.pathname.startsWith("/m")) {
-    console.log('delete m')
     // PC인데 /m/... 에 들어왔다면 원래 경로로 이동
     url.pathname = url.pathname.replace(/^\/m/, "");
     return redirect(url.toString());

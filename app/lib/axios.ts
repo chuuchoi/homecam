@@ -1,6 +1,6 @@
 // app/lib/axios.ts
 import axios from "axios";
-type AxiosResponseType =| 'arraybuffer'| 'blob'| 'document'| 'json'| 'text'| 'stream'| 'formdata';
+type AxiosResponseType = | 'arraybuffer' | 'blob' | 'document' | 'json' | 'text' | 'stream' | 'formdata';
 // Axios 인스턴스 생성
 const axiosInstance = axios.create({
   // baseURL: import.meta.env.VITE_API_BASE_URL, // API의 기본 URL
@@ -32,7 +32,7 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.response.use(
   (response) => {
     // API 응답 상태와 데이터를 콘솔에 출력
-    if(import.meta.env.DEV){
+    if (import.meta.env.DEV) {
       console.log('API Response Status:', response.status);
       console.log('API Response Data:', response.data);
     }
@@ -40,7 +40,7 @@ axiosInstance.interceptors.response.use(
   },
   (error) => {
     // 에러 응답도 콘솔에 출력
-    if(import.meta.env.DEV){
+    if (import.meta.env.DEV) {
       console.error('API Error Status:', error.response?.status);
       console.error('API Error Data:', error.response?.data);
     }
@@ -51,9 +51,10 @@ axiosInstance.interceptors.response.use(
 
 // GET 요청 함수
 // Axios를 사용할 때 이미지 데이터를 바이너리(Blob)로 받아야 한다면 responseType: "blob"을 추가해야 합니다
-export const getData = async (endpoint:string, params = {}, responseType = "json" as AxiosResponseType) => {
+export const getData = async <T = any>(endpoint: string, params = {}, responseType = "json" as AxiosResponseType): Promise<T> => {
   try {
-    return await axiosInstance.get(endpoint, { params, responseType });
+    const res = await axiosInstance.get<T>(endpoint, { params, responseType });
+    return res as T;
   } catch (error) {
     // console.log('⛔ Axios 요청 오류 발생 ⛔');
 
@@ -71,27 +72,30 @@ export const getData = async (endpoint:string, params = {}, responseType = "json
 };
 
 // POST 요청 함수
-export const postData = async (endpoint:any, data:any, config?:any) => {
+export const postData = async <T>(endpoint: any, data: any, config?: any): Promise<T> => {
   try {
-    return await axiosInstance.post(endpoint, data, config);
+    const res = await axiosInstance.post<T>(endpoint, data, config);
+    return res as T;
   } catch (error) {
     throw error;
   }
 };
 
 // PUT 요청 함수
-export const putData = async (endpoint:any, data:any) => {
+export const putData = async <T>(endpoint: any, data: any): Promise<T> => {
   try {
-    return await axiosInstance.put(endpoint, data);
+    const res = await axiosInstance.put<T>(endpoint, data);
+    return res as T;
   } catch (error) {
     throw error;
   }
 };
 
 // DELETE 요청 함수
-export const deleteData = async (endpoint:any, params = {}) => {
+export const deleteData = async <T>(endpoint: any, params = {}): Promise<T> => {
   try {
-    return await axiosInstance.delete(endpoint, { params });
+    const res = await axiosInstance.delete<T>(endpoint, { params });
+    return res as T;
   } catch (error) {
     throw error;
   }

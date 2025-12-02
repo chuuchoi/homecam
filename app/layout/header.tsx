@@ -60,7 +60,7 @@ export default function Header({loaderData}: Route.ComponentProps) {
   }, []);
   
   return (<div className="min-w-[1440px]">
-    <header className="sticky top-0 z-2 w-full text-white shadow-md border-b-1 border-blue-700" style={{background:'linear-gradient(to Bottom, var(--color-neutral-950) 50%, var(--color-blue-600) 96%)'}}>
+    <header className="sticky top-0 z-2 w-full text-white shadow-md border-b border-blue-700" style={{background:'linear-gradient(to Bottom, var(--color-neutral-950) 50%, var(--color-blue-600) 96%)'}}>
       <div className="flex items-center justify-between px-6 py-3">
         {/* 로고 */}
         <Link to={'/store'} className="text-xl font-bold flex flex-col">

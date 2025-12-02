@@ -25,3 +25,11 @@ export const formatDownloads = (num: number): string => {
   if (num >= 1_000) return (num / 1_000).toFixed(1).replace(/\.0$/, '') + 'k';
   return String(num);
 };
+
+// ------------------------------------------------------------------
+// 3. Helper Functions
+// ------------------------------------------------------------------
+export const formatTime = (timestamp: number) => {
+  const date = new Date(timestamp);
+  return `${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}:${String(date.getSeconds()).padStart(2, "0")}`;
+};

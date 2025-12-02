@@ -1,5 +1,5 @@
 // app/routes/register.tsx
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Form, Link, useActionData, useNavigate, useSubmit } from "react-router";
 import type { Route } from "./+types/register";
 import { registerAction } from "~/actions/register";
@@ -16,7 +16,7 @@ export function meta({}: Route.MetaArgs) {
 export const action = registerAction;
 
 export default function Register({}: Route.ComponentProps) {
-  const [step, setStep] = useState<0 | 1 | 2 | 3>(0); // SSR과 동일하게 초기값은 0
+  const [step, setStep] = useState<1 | 2 | 3>(1);
   const [email, setEmail] = useState("");
   // 클라이언트에서 step 복원
   useEffect(() => {
@@ -25,26 +25,24 @@ export default function Register({}: Route.ComponentProps) {
     if (savedE) setEmail(savedE);
     if (savedS) {
       setStep(parseInt(savedS) as 1 | 2 | 3);
-    }else{
-      setStep(1)
     }
     return () => {sessionStorage.removeItem("step");sessionStorage.removeItem("email");sessionStorage.removeItem("code");}
   }, []);
 
   // 클라이언트에서 step 저장
-  useEffect(() => {sessionStorage.setItem("step", step.toString());}, [step]);
+  // useEffect(() => {sessionStorage.setItem("step", step.toString());}, [step]);
   return (
     <main className="bg-neutral-950 flex flex-col items-center justify-center p-24 text-white min-h-[calc(100vh-77px)]">
       {step === 1 && (
         <Process1
-          onNext={setStep}
+          onNext={(step)=>{setStep(step); sessionStorage.setItem("step", step.toString());}}
           email={email}
           setEmail={setEmail}
         />
       )}
       {step === 2 && (
         <Process2
-          onNext={setStep}
+          onNext={(step)=>{setStep(step); sessionStorage.setItem("step", step.toString());}}
           email={email}
         />
       )}
@@ -177,9 +175,9 @@ const Process3 = ({
   email: string;
 }) => {
   const navigate = useNavigate()
-  const actionData = useActionData<{ message: string }>();
+  const actionData = useActionData<{ok:boolean , message: string }>();
   useEffect(()=>{
-    if(actionData?.message === '회원가입이 완료되었습니다.'){
+    if(actionData?.ok){
       setTimeout(() => {
         navigate('/login')
       }, 1200);
@@ -193,8 +191,8 @@ const Process3 = ({
       <input className="inputS0" name="password" type="password" required  placeholder="비밀번호"/>
       <input className="inputS0" name="passwordConfirm" type="password" required  placeholder="비밀번호 확인"/>
       <button type="submit" className="btn-primary0 w-full">가입 완료</button>
-      {actionData?.message && actionData?.message !== '회원가입이 완료되었습니다.' &&<p className="text-red-500">{actionData.message}</p>}
-      {actionData?.message && actionData?.message === '회원가입이 완료되었습니다.' &&<div className="fovrlay">
+      {!actionData?.ok &&<p className="text-red-500">{actionData?.message||'회원가입 실패'}</p>}
+      {actionData?.ok &&<div className="fovrlay">
         <div className="bg-neutral-100 px-10 py-8 text-neutral-800 text-xl font-bold rounded-xl">
           회원가입이 완료되었습니다. <br/>
           <span className="text-neutral-600 text-sm font-medium float-right">로그인 화면으로 이동합니다.</span>

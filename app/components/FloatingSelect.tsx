@@ -8,7 +8,7 @@ export function FloatingSelect({
   onSelect,
   children,
   style
-}:{
+}: {
   options: string[]
   seleted: string | null
   onSelect: (index: number) => void
@@ -22,7 +22,7 @@ export function FloatingSelect({
     middleware: [
       offset(4),
       flip(),
-      shift({ padding: {top:80, bottom:4, left:4, right:4}, mainAxis: true, crossAxis:true }) // 화면 밖으로 안 나가게
+      shift({ padding: { top: 80, bottom: 4, left: 4, right: 4 }, mainAxis: true, crossAxis: true }) // 화면 밖으로 안 나가게
     ],
     whileElementsMounted: autoUpdate // 스크롤/리사이즈 시 자동 재계산
   });
@@ -53,7 +53,7 @@ export function FloatingSelect({
             overflowY: 'auto'
           }}
           className="scrollstyle1 max-h-[50vh] z-4
-          bg-[var(--color-bg-20)] border border-[var(--color-gray-50)] rounded-[5px]
+          bg-(--color-bg-20) border border-gray-50 rounded-[5px]
           shadow-[0px_2px_5px_0px_rgba(0,0,0,0.1)]"
         >
           {options.map((option, index) => (

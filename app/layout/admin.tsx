@@ -36,7 +36,7 @@ export default function Header({loaderData}:Route.ComponentProps) {
   return (<>
     <div className="flex w-full min-w-fit">
       <aside className="sticky top-0 w-3xs max-h-screen bg-black text-white shadow-md overflow-auto" style={{scrollbarWidth:'thin'}}>
-        <div className="min-h-[100vh] flex flex-col bg-neutral-800 gap-12 px-6 py-3">
+        <div className="min-h-screen flex flex-col bg-neutral-800 gap-12 px-6 py-3">
           {/* 로고 */}
           <div className="flex flex-col">
             <span className="text-3xl text-center font-bold">HOME</span>

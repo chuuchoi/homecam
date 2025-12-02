@@ -1,0 +1,74 @@
+[
+  {
+    "id": 1,
+    "email": "jeongwoo.ahn@byanna.io",
+    "registrationDate": "2025.05.25",
+    "registeredModels": 6,
+    "communityActivity": 6,
+    "status": "활동중"
+  },
+  {
+    "id": 2,
+    "email": "jeongwoo.ahn1@byanna.io",
+    "registrationDate": "2025.05.01",
+    "registeredModels": 10,
+    "communityActivity": 10,
+    "status": "활동중"
+  },
+  {
+    "id": 3,
+    "email": "jeongwoo.ahn2@byanna.io",
+    "registrationDate": "2025.04.23",
+    "registeredModels": 2,
+    "communityActivity": 2,
+    "status": "활동중"
+  },
+  {
+    "id": 4,
+    "email": "jeongwoo.ahn3@byanna.io",
+    "registrationDate": "2025.03.03",
+    "registeredModels": 4,
+    "communityActivity": 4,
+    "status": "정지"
+  },
+  {
+    "id": 5,
+    "email": "jeongwoo.ahn@byanna.io",
+    "registrationDate": "2025.05.25",
+    "registeredModels": 6,
+    "communityActivity": 6,
+    "status": "활동중"
+  },
+  {
+    "id": 6,
+    "email": "jeongwoo.ahn1@byanna.io",
+    "registrationDate": "2025.05.01",
+    "registeredModels": 10,
+    "communityActivity": 10,
+    "status": "활동중"
+  },
+  {
+    "id": 7,
+    "email": "jeongwoo.ahn2@byanna.io",
+    "registrationDate": "2025.04.23",
+    "registeredModels": 2,
+    "communityActivity": 2,
+    "status": "활동중"
+  },
+  {
+    "id": 8,
+    "email": "jeongwoo.ahn3@byanna.io",
+    "registrationDate": "2025.03.03",
+    "registeredModels": 4,
+    "communityActivity": 4,
+    "status": "정지"
+  },
+  {
+    "id": 9,
+    "email": "jeongwoo.ahn2@byanna.io",
+    "registrationDate": "2025.04.23",
+    "registeredModels": 2,
+    "communityActivity": 2,
+    "status": "활동중"
+  }
+]

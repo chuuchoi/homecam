@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router";
 import { useOutletContext } from "react-router";
 import {
   LineChart,
@@ -9,8 +8,12 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-} from "recharts"; // Recharts 컴포넌트 임포트
+} from "recharts";
 import { LoadingSpinner } from "~/components/LoadingSpinner";
+import { SalesSettlementModal } from "~/components/admin/SalesSettlementModal";
+import { CloudSubscriptionModal } from "~/components/admin/CloudSubscriptionModal";
+import { DevicePurchaseModal } from "~/components/admin/DevicePurchaseModal";
+import dummySalesSettlementRequests from "~/components/admin/SalesSettlementRequest.json";
 
 export function meta() {
   return [
@@ -37,20 +40,38 @@ const salesData = [
   { name: "14일", uv: 900 },
 ];
 
+// Dummy data for Cloud Subscriptions (matching the CloudSubscriptionModal's expected format)
+const dummyCloudSubscriptions = [
+  { id: 1, account: "jeongwoo.ahn@byanna.io", item: "16GB", type: "월간", price: 7000, date: "2025.07.03" },
+  { id: 2, account: "jeongwoo.ahn1@byanna.io", item: "16GB", type: "년간", price: 70000, date: "2025.07.03" },
+  { id: 3, account: "jeongwoo.ahn2@byanna.io", item: "32GB", type: "월간", price: 14000, date: "2025.07.03" },
+  { id: 4, account: "jeongwoo.ahn3@byanna.io", item: "128GB", type: "년간", price: 56000, date: "2025.07.03" },
+];
+
+// Dummy data for Device Purchases (matching the DevicePurchaseModal's expected format)
+const dummyDevicePurchases = [
+  { id: 1, account: "jeongwoo.ahn@byanna.io", item: "카메라 모델1", price: 50000, date: "2025.07.03" },
+  { id: 2, account: "jeongwoo.ahn1@byanna.io", item: "카메라 모델2", price: 70000, date: "2025.07.03" },
+  { id: 3, account: "jeongwoo.ahn2@byanna.io", item: "카메라 모델1", price: 50000, date: "2025.07.03" },
+  { id: 4, account: "jeongwoo.ahn3@byanna.io", item: "카메라 모델3", price: 100000, date: "2025.07.03" },
+];
+
+
 export default function AdminSales() {
   const { search } = useOutletContext<{ search: string }>();
+  const [isSettlementModalOpen, setIsSettlementModalOpen] = useState(false);
+  const [isCloudModalOpen, setIsCloudModalOpen] = useState(false);
+  const [isDeviceModalOpen, setIsDeviceModalOpen] = useState(false);
 
-  const [chartData, setChartData] = useState<{name: string, uv: number}[]>()
-  useEffect(()=>{
+  const [chartData, setChartData] = useState<{ name: string; uv: number }[]>();
+  useEffect(() => {
     setTimeout(() => {
-      
-      setChartData(salesData)
+      setChartData(salesData);
     }, 3000);
-  },[chartData])
+  }, [chartData]);
+
   return (
     <div className="min-h-[calc(100vh-165px)] bg-[#F1F2F7] p-8">
-      {/* search: {search} */}
-
       {/* 상단 섹션 (매출, 수익 정산 요청) */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
         {/* 매출 카드 */}
@@ -59,11 +80,7 @@ export default function AdminSales() {
             <h2 className="text-lg font-bold text-gray-800">매출</h2>
             <div className="flex items-center space-x-2 text-gray-500 text-sm">
               <span>~ 2025.07.02</span>
-              {/* 달력 아이콘 (필요시 Heroicons 등에서 가져와 사용) */}
-              <button className="p-1 rounded hover:bg-gray-100">
-                {/* <CalendarIcon className="h-4 w-4" /> */}
-                📅
-              </button>
+              <button className="p-1 rounded hover:bg-gray-100">📅</button>
             </div>
           </div>
           <div className="flex items-end mb-4">
@@ -71,42 +88,50 @@ export default function AdminSales() {
               ₩ 400,000<span className="text-2xl font-normal">원</span>
             </h3>
             <div className="flex items-center ml-4 text-red-500 text-sm font-semibold">
-              {/* <ChevronUpIcon className="h-4 w-4" /> */}
               ▲ 20%
             </div>
             <button className="ml-auto p-1 rounded hover:bg-gray-100 text-gray-500">
-              {/* <DownloadIcon className="h-5 w-5" /> */}
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M12 16L7 11L8.4 9.55L11 12.15V4H13V12.15L15.6 9.55L17 11L12 16ZM6 20C5.45 20 4.97933 19.8043 4.588 19.413C4.19667 19.0217 4.00067 18.5507 4 18V15H6V18H18V15H20V18C20 18.55 19.8043 19.021 19.413 19.413C19.0217 19.805 18.5507 20.0007 18 20H6Z"
-               fill="var(--color-blue-600)"/>
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M12 16L7 11L8.4 9.55L11 12.15V4H13V12.15L15.6 9.55L17 11L12 16ZM6 20C5.45 20 4.97933 19.8043 4.588 19.413C4.19667 19.0217 4.00067 18.5507 4 18V15H6V18H18V15H20V18C20 18.55 19.8043 19.021 19.413 19.413C19.0217 19.805 18.5507 20.0007 18 20H6Z"
+                  fill="var(--color-blue-600)"
+                />
               </svg>
             </button>
           </div>
           {/* 매출 차트 */}
-          <div className="h-32"> {/* 차트 높이 설정 */}
-          {(chartData && chartData.length > 0) ?
-            <ResponsiveContainer width="100%" height="100%" initialDimension={{width:320, height:200}}>
-              <LineChart
-                data={chartData}
-                margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+          <div className="h-32">
+            {chartData && chartData.length > 0 ? (
+              <ResponsiveContainer
+                width="100%"
+                height="100%"
+                initialDimension={{ width: 320, height: 200 }}
               >
-                {/* 배경 그리드는 이미지에 없으므로 주석 처리 또는 제거 */}
-                {/* <CartesianGrid strokeDasharray="3 3" /> */}
-                <XAxis dataKey="name" tick={false} height={2} />
-                <YAxis width={1} tick={false} />
-                <Tooltip /> {/* 마우스 오버 시 데이터 표시 */}
-                <Line
-                  type="monotone"
-                  dataKey="uv"
-                  stroke="#3B82F6" // 파란색 라인 (Tailwind blue-500)
-                  strokeWidth={2}
-                  dot={false} // 데이터 포인트에 원형 점을 표시하지 않음
-                />
-              </LineChart>
-            </ResponsiveContainer>
-            :
-            <LoadingSpinner style={{width:"100%", height:"100%"}} />
-          }
+                <LineChart
+                  data={chartData}
+                  margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+                >
+                  <XAxis dataKey="name" tick={false} height={2} />
+                  <YAxis width={1} tick={false} />
+                  <Tooltip />
+                  <Line
+                    type="monotone"
+                    dataKey="uv"
+                    stroke="#3B82F6"
+                    strokeWidth={2}
+                    dot={false}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            ) : (
+              <LoadingSpinner style={{ width: "100%", height: "100%" }} />
+            )}
           </div>
         </div>
 
@@ -114,30 +139,30 @@ export default function AdminSales() {
         <div className="bg-white rounded-lg shadow p-6">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-lg font-bold text-gray-800">
-              수익 정산 요청(4건)
+              수익 정산 요청({dummySalesSettlementRequests.length}건)
             </h2>
-            <button className="text-gray-400 hover:text-gray-600">
-              {/* <PlusIcon className="h-5 w-5" /> */}
+            <button
+              className="text-gray-400 hover:text-gray-600"
+              onClick={() => setIsSettlementModalOpen(true)}
+            >
               +
             </button>
           </div>
           <div>
-            <PayoutRequestItem
-              userImage="https://randomuser.me/api/portraits/men/1.jpg"
-              email="jeongwoo.ahn@byanna.io"
-            />
-            <PayoutRequestItem
-              userImage="https://randomuser.me/api/portraits/men/2.jpg"
-              email="jeongwoo.ahn1@byanna.io"
-            />
-            <PayoutRequestItem
-              userImage="https://randomuser.me/api/portraits/men/3.jpg"
-              email="jeongwoo.ahn2@byanna.io"
-            />
-            <PayoutRequestItem
-              userImage="https://randomuser.me/api/portraits/men/4.jpg"
-              email="jeongwoo.ahn3@byanna.io"
-            />
+            {dummySalesSettlementRequests.slice(0, 4).map((request) => ( // Display up to 4 items or fewer
+              <PayoutRequestItem
+                key={request.id}
+                userImage={`https://randomuser.me/api/portraits/men/${request.id}.jpg`} // Dynamic image based on ID
+                email={request.account}
+                setIsSettlementModalOpen={setIsSettlementModalOpen}
+              />
+            ))}
+            {dummySalesSettlementRequests.length > 4 && (
+              <p className="text-sm text-gray-600 mt-2 text-center cursor-pointer hover:underline"
+                 onClick={() => setIsSettlementModalOpen(true)}>
+                더 많은 요청 보기...
+              </p>
+            )}
           </div>
         </div>
       </div>
@@ -150,26 +175,55 @@ export default function AdminSales() {
             <h2 className="text-lg font-bold text-gray-800">
               클라우드 구독 목록
             </h2>
-            <button className="text-gray-400 hover:text-gray-600">
-              {/* <PlusIcon className="h-5 w-5" /> */}
+            <button
+              className="text-gray-400 hover:text-gray-600"
+              onClick={() => setIsCloudModalOpen(true)}
+            >
               +
             </button>
           </div>
-          <SubscriptionList />
+          <SubscriptionList subscriptions={dummyCloudSubscriptions} /> {/* Pass dummy data */}
         </div>
 
         {/* 장치 구매 관리 카드 */}
         <div className="bg-white rounded-lg shadow p-6">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-lg font-bold text-gray-800">장치 구매 관리</h2>
-            <button className="text-gray-400 hover:text-gray-600">
-              {/* <PlusIcon className="h-5 w-5" /> */}
+            <button
+              className="text-gray-400 hover:text-gray-600"
+              onClick={() => setIsDeviceModalOpen(true)}
+            >
               +
             </button>
           </div>
-          <DevicePurchaseList />
+          <DevicePurchaseList purchases={dummyDevicePurchases} /> {/* Pass dummy data */}
         </div>
       </div>
+
+      {/* 모달 컴포넌트 렌더링 */}
+      {isSettlementModalOpen && (
+        <SalesSettlementModal
+          requests={dummySalesSettlementRequests}
+          isOpen
+          onClose={() => setIsSettlementModalOpen(false)}
+        />
+      )}
+
+      {isCloudModalOpen && (
+        <CloudSubscriptionModal
+          subscriptions={dummyCloudSubscriptions}
+          isOpen
+          onClose={() => setIsCloudModalOpen(false)}
+        />
+      )}
+
+      {isDeviceModalOpen && (
+        <DevicePurchaseModal
+          purchases={dummyDevicePurchases}
+          isOpen
+          onClose={() => setIsDeviceModalOpen(false)}
+        />
+      )}
     </div>
   );
 }
@@ -178,9 +232,11 @@ export default function AdminSales() {
 function PayoutRequestItem({
   userImage,
   email,
+  setIsSettlementModalOpen,
 }: {
   userImage: string;
   email: string;
+  setIsSettlementModalOpen: (isOpen: boolean) => void;
 }) {
   return (
     <div className="flex items-center py-2 border-b border-gray-100 last:border-b-0">
@@ -190,7 +246,10 @@ function PayoutRequestItem({
         className="w-8 h-8 rounded-full object-cover mr-3 shrink-0"
       />
       <p className="flex-1 text-sm text-gray-800 truncate">{email}</p>
-      <button className="bg-blue-500 text-white text-xs px-3 py-1 rounded-full hover:bg-blue-600 ml-2">
+      <button
+        className="bg-blue-500 text-white text-xs px-3 py-1 rounded-full hover:bg-blue-600 ml-2"
+        onClick={() => setIsSettlementModalOpen(true)}
+      >
         정산
       </button>
     </div>
@@ -198,38 +257,7 @@ function PayoutRequestItem({
 }
 
 // 클라우드 구독 목록 테이블 컴포넌트
-function SubscriptionList() {
-  const subscriptions = [
-    {
-      id: 1,
-      account: "jeongwoo@byanna.io",
-      item: "16GB",
-      type: "월간",
-      date: "2025.07.03",
-    },
-    {
-      id: 2,
-      account: "jeongwoo1@byanna.io",
-      item: "16GB",
-      type: "년간",
-      date: "2025.07.03",
-    },
-    {
-      id: 3,
-      account: "jeongwoo2@byanna.io",
-      item: "32GB",
-      type: "월간",
-      date: "2025.07.03",
-    },
-    {
-      id: 4,
-      account: "jeongwoo3@byanna.io",
-      item: "128GB",
-      type: "년간",
-      date: "2025.07.03",
-    },
-  ];
-
+function SubscriptionList({ subscriptions }: { subscriptions: typeof dummyCloudSubscriptions }) { // Receive data via props
   return (
     <div className="overflow-x-auto">
       <table className="min-w-full divide-y divide-gray-200">
@@ -285,14 +313,7 @@ function SubscriptionList() {
 }
 
 // 장치 구매 목록 테이블 컴포넌트
-function DevicePurchaseList() {
-  const purchases = [
-    { id: 1, account: "jeongwoo@byanna.io", item: "카메라 모델1", date: "2025.07.03" },
-    { id: 2, account: "jeongwoo1@byanna.io", item: "카메라 모델2", date: "2025.07.03" },
-    { id: 3, account: "jeongwoo2@byanna.io", item: "카메라 모델1", date: "2025.07.03" },
-    { id: 4, account: "jeongwoo3@byanna.io", item: "카메라 모델3", date: "2025.07.03" },
-  ];
-
+function DevicePurchaseList({ purchases }: { purchases: typeof dummyDevicePurchases }) { // Receive data via props
   return (
     <div className="overflow-x-auto">
       <table className="min-w-full divide-y divide-gray-200">

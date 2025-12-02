@@ -1,6 +1,9 @@
 // routes/admin/developers.tsx
-// import { Link } from "react-router";
+
+import { useState } from "react";
 import { useOutletContext } from "react-router";
+import { DeveloperListModal } from "~/components/admin/DeveloperListModal";
+import dummyDevelopers from "~/components/admin/developers.json";
 
 export function meta() {
   return [
@@ -49,6 +52,7 @@ const developers = [
 
 export default function AdminDevelopers() {
   const { search } = useOutletContext<{ search: string }>();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
     <div className="min-h-[calc(100vh-165px)] bg-[#F1F2F7] p-8">
@@ -151,7 +155,9 @@ export default function AdminDevelopers() {
             <h2 className="text-lg font-bold text-gray-800">
               개발자 목록({developers.length}명)
             </h2>
-            <button className="text-blue-500 hover:text-blue-600 p-1 rounded-full bg-blue-100 flex items-center justify-center w-6 h-6">
+            <button className="text-blue-500 hover:text-blue-600 p-1 rounded-full bg-blue-100 flex items-center justify-center w-6 h-6"
+              onClick={() => setIsModalOpen(true)}
+            >
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M11 13H5V11H11V5H13V11H19V13H13V19H11V13Z" fill="#3B82F6"/>
               </svg>
@@ -179,6 +185,13 @@ export default function AdminDevelopers() {
           </div>
         </div>
       </div>
+
+
+      <DeveloperListModal 
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        developers={dummyDevelopers}
+      />
     </div>
   );
 }

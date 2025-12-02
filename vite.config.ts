@@ -2,7 +2,8 @@ import { reactRouter } from "@react-router/dev/vite";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
-// import path from "path";
+import fs from "fs";
+import path from "path";
 
 export default defineConfig({
   //issue #10455 Cannot read properties of null (reading 'useContext') #10455
@@ -18,11 +19,11 @@ export default defineConfig({
   // server: {
   //   hmr: false
   // },
-//| 패키지                 | 용도          | 특징                                         | HMR 안정성       |
-// | ------------------- | ----------- | ------------------------------------------ | ------------- |
-// | `react-router`      | 안정 버전       | core routing, v6 스타일 nested route          | 안정적           |
-// | `react-router-dom`  | 브라우저 환경     | v6, `<Routes>` + `<Route>`                 | 안정적           |
-// | `@react-router/dev` | 개발용 dev 패키지 | 파일 기반 라우팅, `route()`/`layout()`/`prefix()` | **HMR 깨짐 가능** |
+  //| 패키지                 | 용도          | 특징                                         | HMR 안정성       |
+  // | ------------------- | ----------- | ------------------------------------------ | ------------- |
+  // | `react-router`      | 안정 버전       | core routing, v6 스타일 nested route          | 안정적           |
+  // | `react-router-dom`  | 브라우저 환경     | v6, `<Routes>` + `<Route>`                 | 안정적           |
+  // | `@react-router/dev` | 개발용 dev 패키지 | 파일 기반 라우팅, `route()`/`layout()`/`prefix()` | **HMR 깨짐 가능** |
 
 
   plugins: [tailwindcss(), reactRouter(), tsconfigPaths()],
@@ -32,4 +33,15 @@ export default defineConfig({
   //     "~": path.resolve(__dirname, 'app'),
   //   },
   // },
+
+  server: {
+    //카메라 접근 모바일환경 테스트용 https
+    https: {
+      key: fs.readFileSync(path.resolve(__dirname, "localhost+1-key.pem")),
+      cert: fs.readFileSync(path.resolve(__dirname, "localhost+1.pem")),
+    },
+    host: "0.0.0.0", // 외부 접속 허용
+    port: 5173,
+    allowedHosts: true
+  },
 });
