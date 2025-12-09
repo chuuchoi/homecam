@@ -1,0 +1,116 @@
+/* Calendar.module.css */
+
+/* 
+   가장 바깥쪽 래퍼 클래스입니다. 
+   이 클래스 하위에 있는 react-calendar 스타일만 변경하도록 설정합니다.
+*/
+.customCalendar {
+  width: 100% !important;
+  background-color: transparent !important;
+  border: none !important;
+  font-family: inherit;
+  line-height: 1.125em;
+}
+
+/* 
+   react-calendar 같은 외부 라이브러리는 이미 정해진 클래스 이름(예: .react-calendar__tile)을 가지고 있습니다.
+   CSS Module 내부에서 외부 라이브러리의 클래스를 타겟팅할 때는 :global() 선택자를 사용하거나, 부모 클래스로 범위를 한정 지어야 합니다.
+   .customCalendar 클래스 내부의 요소들에만 적용되므로 안전합니다.
+*/
+
+/* 상단 네비게이션 (년/월 + 화살표) */
+.customCalendar :global(.react-calendar__navigation) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1rem;
+  height: 44px;
+}
+
+/* 년/월 라벨 (June 2025) */
+.customCalendar :global(.react-calendar__navigation__label) {
+  color: white;
+  font-weight: 700;
+  font-size: 1.125rem;
+  /* text-lg */
+  flex-grow: 0 !important;
+  pointer-events: none;
+}
+
+/* 화살표 버튼 공통 */
+.customCalendar :global(.react-calendar__navigation button) {
+  min-width: 44px;
+  background: none;
+  font-size: 1.5rem;
+}
+
+/* 화살표 색상 (Blue) */
+.customCalendar :global(.react-calendar__navigation__prev-button),
+.customCalendar :global(.react-calendar__navigation__next-button) {
+  color: #3b82f6;
+  /* Tailwind blue-500 */
+}
+
+/* 비활성화 버튼 */
+.customCalendar :global(.react-calendar__navigation button:disabled) {
+  background-color: transparent;
+  color: #555;
+}
+
+/* 요일 헤더 (SUN, MON...) */
+.customCalendar :global(.react-calendar__month-view__weekdays) {
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 0.875rem;
+  color: #a3a3a3;
+  /* text-neutral-400 */
+  margin-bottom: 0.5rem;
+}
+
+.customCalendar :global(.react-calendar__month-view__weekdays__weekday abbr) {
+  text-decoration: none;
+  cursor: default;
+}
+
+/* 날짜 타일 공통 */
+.customCalendar :global(.react-calendar__tile) {
+  color: white;
+  background: transparent;
+  text-align: center;
+  padding: 1.25rem 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+/* 날짜 타일 호버/포커스 */
+/* .customCalendar :global(.react-calendar__tile:enabled:hover),
+.customCalendar :global(.react-calendar__tile:enabled:focus) {
+  background-color: #333;
+} */
+
+/* 오늘 날짜 (선택 안됨) */
+/* .customCalendar :global(.react-calendar__tile--now) {
+  background: #3b82f6 !important;
+  border-radius: 9999px;
+  color: white !important;
+} */
+
+/* 선택된 날짜 (Active) */
+.customCalendar :global(.react-calendar__tile--active) {
+  background: transparent;
+  color: #3b82f6;
+}
+
+/* [추가] URL 파라미터나 로직에 의해 선택된 날짜 스타일 (.today) */
+/* .customCalendar .today {
+  background: #3b82f6 !important;
+  border-radius: 9999px;
+  color: white !important;
+} */
+
+/* 년도 이동 버튼 숨김 (<<, >>) - 필요 시 */
+.customCalendar :global(.react-calendar__navigation__prev2-button),
+.customCalendar :global(.react-calendar__navigation__next2-button) {
+  display: none;
+}

@@ -1,4 +1,4 @@
-// app/routes/api/logout.ts
+// app/api/logout.ts
 import { redirect, type ActionFunctionArgs } from "react-router";
 import { getCookieValue, removeToken } from "~/lib/auth";
 
@@ -7,7 +7,7 @@ export function action({ request }: ActionFunctionArgs) {
   const token = getCookieValue(cookieHeader, "token");
   console.log("action`````")
   removeToken(token)
-  return redirect ("/",{
+  return redirect("/", {
     headers: {// 쿠키 만료
       "Set-Cookie": "token=; HttpOnly; Path=/; Max-Age=0; SameSite=Lax",
     },
@@ -27,6 +27,6 @@ export function loader({ request }: ActionFunctionArgs) {
   });
 }
 
-export default function Logout(){
+export default function Logout() {
   return null
 }

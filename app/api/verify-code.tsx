@@ -1,4 +1,4 @@
-// app/routes/api/verify-code.tsx
+// app/api/verify-code.tsx
 import type { ActionFunctionArgs } from "react-router";
 import { verifyCode } from "./send-code";
 

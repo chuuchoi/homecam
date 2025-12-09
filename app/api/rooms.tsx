@@ -1,4 +1,4 @@
-// app/routes/api/room.ts
+// app/api/room.ts
 import { roomAction, roomLoader } from "~/actions/room";
 
 export const loader = roomLoader;

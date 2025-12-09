@@ -1,4 +1,4 @@
-// app/routes/api/webauthn/register/options.tsx
+// app/api/webauthn/register/options.tsx
 import { generateRegistrationOptions } from "@simplewebauthn/server";
 import type { ActionFunctionArgs } from "react-router";
 
@@ -10,7 +10,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const userId = body.userId;
 
   if (!userId) return { ok: false, message: "userId 필요" };
-  
+
   // 문자열을 Buffer로 변환
   const userIdBuffer = Buffer.from(userId, "utf-8");
 

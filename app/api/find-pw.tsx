@@ -1,4 +1,4 @@
-// app/routes/api/find-pw.tsx
+// app/api/find-pw.tsx
 import type { ActionFunctionArgs } from "react-router";
 import { pool } from "~/lib/db";
 import { hashPassword, generateTemporaryPassword } from "~/lib/utils/password";

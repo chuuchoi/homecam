@@ -1,4 +1,4 @@
-// app/routes/api/device/$id/replay.tsx
+// app/api/device/$id/replay.tsx
 import moment from "moment";
 import type { LoaderFunctionArgs } from "react-router";
 
@@ -24,7 +24,7 @@ export interface ReplayEvent {
 
 const dummyEvents = (date: string) => [
   {
-    id: "evt_1",
+    id: `${date}_evt_1`,
     eventType: "motion",
     label: "움직임 감지",
     startTime: `${date}T00:00:10`,
@@ -32,7 +32,7 @@ const dummyEvents = (date: string) => [
     color: "bg-blue-600",
   },
   {
-    id: "evt_2",
+    id: `${date}_evt_2`,
     eventType: "person",
     label: "사람 감지",
     startTime: `${date}T00:02:30`,
@@ -40,7 +40,7 @@ const dummyEvents = (date: string) => [
     color: "bg-indigo-600",
   },
   {
-    id: "evt_3",
+    id: `${date}_evt_3`,
     eventType: "fire",
     label: "화재 감지",
     startTime: `${date}T00:05:00`,
@@ -48,7 +48,7 @@ const dummyEvents = (date: string) => [
     color: "bg-red-600",
   },
   {
-    id: "evt_4",
+    id: `${date}_evt_4`,
     eventType: "motion",
     label: "움직임 감지",
     startTime: `${date}T00:08:00`,

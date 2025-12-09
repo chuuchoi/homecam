@@ -22,9 +22,8 @@ export default function ReplayFilter() {
   const navigate = useNavigate();
   const params = useParams();
   const id = params.id || "";
-  console.log('params', params, id)
-  const queryClient = useQueryClient();
 
+  const queryClient = useQueryClient();
   // deviceFilter 조회
   const { data: deviceFilter } = useQuery<FilterItem[], Error>({
     queryKey: ["deviceFilter", id],

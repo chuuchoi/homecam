@@ -1,4 +1,4 @@
-// app/routes/api/send-code.tsx
+// app/api/send-code.tsx
 import type { ActionFunctionArgs } from "react-router";
 import { sendEmailVerificationCode } from "~/lib/utils/email";
 import { generateVerificationCode } from "~/lib/utils/password";

@@ -1,4 +1,4 @@
-// app/routes/api/device/filter.tsx
+// app/api/device/filter.tsx
 import type { ActionFunctionArgs } from "react-router";
 import type { LoaderFunctionArgs } from "react-router";
 

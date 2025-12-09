@@ -1,4 +1,4 @@
-// app/routes/api/webauthn/login/verify.tsx
+// app/api/webauthn/login/verify.tsx
 import { verifyAuthenticationResponse } from "@simplewebauthn/server";
 import type { ActionFunctionArgs } from "react-router";
 import { credentialStore } from "../register/verify";
@@ -6,10 +6,10 @@ import { sessionStore } from "./options";
 import { generateToken } from "~/lib/auth";
 import { pool } from "~/lib/db";
 
-export const action = async ({ request }:ActionFunctionArgs) => {
+export const action = async ({ request }: ActionFunctionArgs) => {
   const body = await request.json();
   const { userId, assertionResponse } = body;
-console.log(userId,sessionStore)
+  console.log(userId, sessionStore)
   const expectedChallenge = sessionStore[userId];
   if (!expectedChallenge) return { ok: false, message: "Challenge 없음" };
   delete sessionStore[userId];

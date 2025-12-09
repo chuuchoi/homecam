@@ -38,17 +38,17 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 const queryClient = new QueryClient()
-export default function Root({}: Route.ComponentProps) {
+export default function Root({ }: Route.ComponentProps) {
 
   return (<>
     <QueryClientProvider client={queryClient}>
       <Outlet />
       <Confirm /> {/* 전역 Dialog 컴포넌트 */}
       <Alert /> {/* 전역 Dialog 컴포넌트 */}
-      <ReactQueryDevtools initialIsOpen={false} />
+      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
     </QueryClientProvider>
   </>
-);
+  );
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {

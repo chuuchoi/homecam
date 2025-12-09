@@ -1,17 +1,17 @@
 // app/routes/m/device/$id.tsx
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useParams, useNavigate, Link, useLoaderData, type LoaderFunctionArgs } from "react-router";
+import { useNavigate, Link, useLoaderData, type LoaderFunctionArgs } from "react-router";
 import dummyDevices from "../../dummyDevices.json";
 import AdaptiveTimeline from "~/components/m/device/$id/replay/AdaptiveTimeLine";
 import moment from "moment";
 import { getData } from "~/lib/axios";
 import { useQuery } from "@tanstack/react-query";
-import type { ReplayEvent } from "~/routes/api/device/$id/replay";
+import type { ReplayEvent } from "~/api/device/$id/replay";
 
 // 1. 아이콘 컴포넌트 확장 (푸터용 아이콘 추가)
 const Icons = {
   Back: () => <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" /></svg>,
-  Settings: () => <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M10.34 15.84c-.688-.06-1.386-.09-2.09-.09H7.5a4.5 4.5 0 110-9h.75c.704 0 1.402-.03 2.09-.09m0 9.18c.253.962.584 1.892.985 2.783.247.55.06 1.21-.463 1.511l-.657.38c-.551.318-1.26.117-1.527-.461a20.845 20.845 0 01-1.44-4.282m3.102.069a18.03 18.03 0 01-.59-4.59c0-1.586.205-3.124.59-4.59m0 9.18a23.848 23.848 0 018.835 2.535M10.34 6.66a23.847 23.847 0 008.835-2.535m0 0A23.74 23.74 0 0018.795 3m.38 1.125a23.91 23.91 0 011.014 5.395m-1.014 8.855c-.118.38-.245.754-.38 1.125m.38-1.125a23.91 23.91 0 001.014-5.395m0-3.46c.495.43.72 1.076.72 1.66v2.16c0 .585-.225 1.23-.72 1.66m-8.91-1.44h.008v.008h-.008V12zm.008 2.25h-.008v.008h.008v-.008zm0-4.5h-.008v.008h.008v-.008z" /></svg>,
+  Settings: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M14.82 1H9.17997L8.53296 4.237C7.99727 4.47706 7.48788 4.77197 7.01296 5.117L3.88296 4.058L1.06396 8.942L3.54496 11.122C3.48505 11.7058 3.48505 12.2942 3.54496 12.878L1.06396 15.058L3.88397 19.942L7.01296 18.884C7.48496 19.226 7.99296 19.522 8.53296 19.763L9.17997 23H14.82L15.467 19.763C16.0027 19.5229 16.512 19.228 16.987 18.883L20.117 19.942L22.937 15.058L20.455 12.878C20.5149 12.2942 20.5149 11.7058 20.455 11.122L22.936 8.942L20.116 4.058L16.988 5.116C16.513 4.77131 16.0036 4.47674 15.468 4.237L14.82 1ZM12 16C10.9391 16 9.92168 15.5786 9.17154 14.8284C8.42139 14.0783 7.99996 13.0609 7.99996 12C7.99996 10.9391 8.42139 9.92172 9.17154 9.17157C9.92168 8.42143 10.9391 8 12 8C13.0608 8 14.0782 8.42143 14.8284 9.17157C15.5785 9.92172 16 10.9391 16 12C16 13.0609 15.5785 14.0783 14.8284 14.8284C14.0782 15.5786 13.0608 16 12 16Z" /></svg>,
   Expand: () => <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15" /></svg>,
   ChevronLeft: () => <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" /></svg>,
   ChevronRight: () => <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg>,
@@ -60,9 +60,9 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   // try {
   // const res = await fetch(`https://localhost:5173/api/device/${id}/replay?date=${date}`)
   // data = await res.json()
-  // const res = await fetch(`https://google.com`)
-  // data = await res.text()
-  // data = await getData(`https://google.com`);
+  // //const res = await fetch(`https://google.com`)
+  // //data = await res.text()
+  // //data = await getData(`https://google.com`);
   // } catch (error) {
   // console.log(error)
   // data = ''
@@ -83,7 +83,7 @@ export default function Device() {
     queryKey: ["replay", id, date],
     queryFn: () => getData(`/api/device/${id}/replay?date=${date}`),
   });
-  const BASE_TIME = useMemo(() => isNaN(new Date(data?.video?.startTime).getTime()) ? undefined : data?.video?.startTime, [data]); // 영상 시작 시간
+  const BASE_TIME = useMemo(() => isNaN(new Date(data?.video?.startTime).getTime()) ? undefined : data?.video?.startTime, [data?.video?.startTime]); // 영상 시작 시간
   const eventTimes = useMemo(() => {
     let times: string[] = [];
     data?.events.forEach((e: ReplayEvent) => {
@@ -91,7 +91,7 @@ export default function Device() {
       times.push(e.endTime);
     });
     return times;
-  }, [data]);
+  }, [data?.events]);
 
   const navigate = useNavigate();
 
@@ -103,8 +103,18 @@ export default function Device() {
   const [showEvents, setShowEvents] = useState(false);
   const END_TIME = useMemo(() => {
     if (!BASE_TIME) return undefined;
-    return moment(BASE_TIME).add(videoDuration, "seconds").toISOString()
+    return moment(BASE_TIME).add(videoDuration, "seconds").format("YYYY-MM-DDTHH:mm:ss")
   }, [BASE_TIME, videoDuration]);
+  const currentEvent = useMemo(() => {
+    if (!BASE_TIME) return null;
+    if (data?.events?.length === 0) return null;
+    const currentTime = new Date(BASE_TIME).getTime() + videoCurrentTime * 1000;
+    return data.events.find((e: ReplayEvent) => {
+      const startTime = new Date(e.startTime).getTime();
+      const endTime = new Date(e.endTime).getTime();
+      return startTime <= currentTime && currentTime <= endTime;
+    }) || null;
+  }, [videoCurrentTime, data?.events])
 
   const handleVideoLoadedMetadata = () => {
     setVideoDuration(videoRef.current?.duration || 0);
@@ -180,7 +190,9 @@ export default function Device() {
           <Icons.Back />
         </button>
         <h1 className="text-lg font-bold">{device?.name || "거실"}</h1>
-        <button className="p-1 rounded-full active:bg-gray-800 transition-colors">
+        <button className="p-1 rounded-full active:bg-gray-800 transition-colors"
+          onClick={() => navigate(`/m/device/${id}/settings`)}
+        >
           <Icons.Settings />
         </button>
       </header>
@@ -222,9 +234,11 @@ export default function Device() {
           </div>
           {/* 디버그용 시간 표시 */}
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <div className="bg-black/50 px-2 py-1 rounded text-sm">
-              {moment.utc(videoCurrentTime * 1000).format("HH:mm:ss")}
-            </div>
+            <p className="bg-black/50 px-2 py-1 rounded text-sm">
+              {moment.utc(videoCurrentTime * 1000).format("HH:mm:ss")}<br />
+              현재 재생중인 이벤트<br />
+              {!currentEvent ? "없음" : JSON.stringify(currentEvent)}
+            </p>
           </div>
         </div>
 
@@ -317,9 +331,9 @@ export default function Device() {
 
       {/* ✅ 푸터 */}
       <footer className="fixed bottom-0 left-0 right-0 bg-black px-8 py-4 z-50 grid grid-cols-4 gap-4 border-t border-gray-900">
-        <FooterBtn icon={<Icons.Download />} label="다운로드" onClick={() => { navigate(`/m/device/${id}/download`); }} />
+        <FooterBtn icon={<Icons.Download />} label="다운로드" onClick={() => { navigate(`/m/device/${id}/download?videoStart=${BASE_TIME}&videoEnd=${END_TIME}&currentEvent=${JSON.stringify(currentEvent)}`); }} />
         <FooterBtn icon={<Icons.Share />} label="공유" onClick={handleClickShare} />
-        <FooterBtn icon={<Icons.Calendar />} label="캘린더" onClick={() => { navigate(`/m/device/${id}/calendar`); }} />
+        <FooterBtn icon={<Icons.Calendar />} label="캘린더" onClick={() => { navigate(`/m/device/${id}/calendar?date=${date}`); }} />
         <FooterBtn icon={<Icons.Filter />} label="필터" onClick={() => { navigate(`/m/device/${id}/filter`); }} />
       </footer>
     </div>

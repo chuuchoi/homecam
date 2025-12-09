@@ -20,6 +20,14 @@ export default [
         route(":id/download", "routes/m/device/$id/download.tsx"),
         route(":id/calendar", "routes/m/device/$id/calendar.tsx"),
         route(":id/filter", "routes/m/device/$id/filter.tsx"),
+        route(":id/settings", "routes/m/device/$id/settings.tsx"),
+        ...prefix(":id/settings", [
+          route("name", "routes/m/device/$id/settings/name.tsx"),
+          route("nightvision", "routes/m/device/$id/settings/nightvision.tsx"),
+          route("streaming", "routes/m/device/$id/settings/streaming.tsx"),
+          route("recording", "routes/m/device/$id/settings/recording.tsx"),
+          route("info", "routes/m/device/$id/settings/info.tsx"),
+        ]),
       ]),
       ...prefix("add-device", [
         route("scanqr", "routes/m/add-device/scanqr.tsx"),
@@ -32,6 +40,9 @@ export default [
       route("devices", "routes/m/devices.tsx"),
       layout("./layout/m/bottom-tabs.tsx", [
         route("home", "routes/m/home.tsx"),
+        route("records", "routes/m/records/index.tsx"),
+        route("records/:id", "routes/m/records/$id.tsx"),
+        route("store", "routes/m/store/index.tsx"),
       ]),
 
     ]),

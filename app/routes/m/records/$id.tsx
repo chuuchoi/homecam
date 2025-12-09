@@ -1,0 +1,163 @@
+// app/routes/m/records/$id.tsx
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { useLoaderData, useNavigate } from "react-router";
+import moment from "moment";
+import dummyDevices from "../dummyDevices.json";
+import { BackIcon } from "~/components/icons";
+
+export interface HomeDevice {
+  id: string;
+  name: string;
+  thumbnail: string;
+  status: "online" | "offline";
+}
+
+export const loader = async () => {
+  const devices = dummyDevices;
+  return { devices } as { devices: HomeDevice[] };
+};
+
+function getDaysInMonth(year: number, month: number) {
+  return new Date(year, month, 0).getDate();
+}
+
+export default function Records({ params }: { params: { id: string } }) {
+  const navigate = useNavigate();
+  const { devices } = useLoaderData<typeof loader>();
+  const [date, setDate] = useState(moment().format("YYYY-MM-DD"));
+
+  // refs
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const dayRefs = useRef<Array<HTMLDivElement | null>>([]);
+  // initial done flag (ref so updating doesn't rerender)
+  const initialDone = useRef(false);
+  // state to control visibility after initial scroll is set
+  const [visible, setVisible] = useState(false);
+
+  const daysInMonth = useMemo(
+    () => getDaysInMonth(moment(date).year(), moment(date).month() + 1),
+    [date]
+  );
+
+  // 1) 마운트 시 (한 번만) — 즉시 scrollLeft 설정 (behavior: auto)
+  useLayoutEffect(() => {
+    const selectedDay = moment(date).date(); // 1~31
+    const target = dayRefs.current[selectedDay - 1];
+    const container = containerRef.current;
+
+    if (target && container) {
+      const containerWidth = container.clientWidth;
+      const targetWidth = target.clientWidth;
+      // offsetLeft은 container 내에서의 좌측 위치 (padding 포함)
+      const targetLeft = target.offsetLeft;
+
+      const scrollTo = targetLeft - containerWidth / 2 + targetWidth / 2;
+
+      // 즉시 적용 (애니메이션 없이) — paint 전이라 플래시 최소화
+      container.scrollLeft = scrollTo;
+    }
+
+    // 초기 처리가 끝났음을 표시해서 visible 상태로 바꾼다.
+    // 다음 칸에서는 부드러운 스크롤 로직(날짜 변경 시)에 의해 애니메이션이 발생할 수 있음.
+    initialDone.current = true;
+    setVisible(true);
+    // 빈 deps -> 마운트 시 1회만 실행
+  }, []);
+
+  // 2) date 변경 시(사용자 클릭 등) -> 부드럽게 스크롤
+  useEffect(() => {
+    if (!initialDone.current) return; // 초기 마운트 때는 이미 처리했으니 skip
+
+    const selectedDay = moment(date).date();
+    const target = dayRefs.current[selectedDay - 1];
+    const container = containerRef.current;
+
+    if (target && container) {
+      const containerWidth = container.clientWidth;
+      const targetWidth = target.clientWidth;
+      const targetLeft = target.offsetLeft;
+      const scrollTo = targetLeft - containerWidth / 2 + targetWidth / 2;
+
+      container.scrollTo({ left: scrollTo, behavior: "smooth" });
+    }
+  }, [date]);
+
+  return (
+    <div className="flex flex-col h-screen bg-black text-white">
+      <header className="w-full px-4 py-2.5 flex items-center gap-1 relative mb-2">
+        <div
+          className="aspect-square flex items-center justify-center absolute top-0 left-0 h-full cursor-pointer"
+          onClick={() => {
+            navigate(-1);
+          }}
+        >
+          <BackIcon className="w-5 h-5" />
+        </div>
+        <div className="font-bold text-lg flex items-center justify-center w-full gap-1">
+          이벤트 기록
+        </div>
+      </header>
+
+      <main className="flex flex-1 p-6 pt-2 flex-col overflow-auto">
+        <div className="flex items-center gap-2 relative">
+          <label
+            htmlFor="date"
+            onClick={() => {
+              const dateInput = document.getElementById("date");
+              if (dateInput instanceof HTMLInputElement) {
+                dateInput.showPicker?.();
+              }
+            }}
+            className="text-[#a0a0a0] text-[13px] font-medium ml-1 bg-neutral-500 p-4 cursor-pointer"
+          >
+            날짜: {date}
+          </label>
+          <input
+            id="date"
+            type="date"
+            name="date"
+            onChange={(e) => setDate(e.target.value)}
+            className="pointer-events-none absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer"
+          />
+        </div>
+
+        {/* containerRef를 달고, 초기에는 visibility:hidden -> 중앙 스크롤 셋팅 후 visible */}
+        <div
+          id="day-scroll"
+          ref={containerRef}
+          className="relative bg-neutral-700 w-full h-20 overflow-auto mt-4 flex gap-2"
+          style={{ visibility: visible ? "visible" : "hidden" }}
+        >
+          <div className="min-w-[calc(50%-32px)]" />
+
+          {Array.from({ length: daysInMonth }).map((_, index) => {
+            return (
+              <div
+                key={index}
+                ref={(el) => {
+                  dayRefs.current[index] = el;
+                }}
+                className={`h-12 min-w-12 rounded-full flex items-center justify-center shadow-lg border border-white/10 z-10
+                   ${moment(date).date() === index + 1 ? "bg-blue-600" : "bg-blue-400/60"}`}
+                onClick={() =>
+                  setDate(
+                    `${moment(date).year()}-${String(moment(date).month() + 1).padStart(
+                      2,
+                      "0"
+                    )}-${String(index + 1).padStart(2, "0")}`
+                  )
+                }
+              >
+                <span>{index + 1}</span>
+              </div>
+            );
+          })}
+
+          <div className="min-w-[calc(50%-32px)]" />
+        </div>
+      </main>
+
+      <div className="h-16 w-full "></div>
+    </div>
+  );
+}

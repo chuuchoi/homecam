@@ -4,14 +4,14 @@ import { Link, useLoaderData, useNavigate } from "react-router";
 import { registerServiceWorker } from "~/utils/registerServiceWorker";
 import dummyDevices from "./dummyDevices.json"
 
-interface HomeDevice{
+export interface HomeDevice {
   id: string;
   name: string;
   thumbnail: string;
   status: "online" | "offline";
 }
 
-export function meta({}) {
+export function meta({ }) {
   return [
     { title: "홈캠" },
     { name: "description", content: "Homecam home" },
@@ -22,7 +22,7 @@ export function meta({}) {
 export const loader = async () => {
   // 실제로는 DB나 API에서 가져올 데이터
   const devices = dummyDevices
-  return { devices } as {devices:HomeDevice[]};
+  return { devices } as { devices: HomeDevice[] };
 };
 
 
@@ -32,7 +32,7 @@ export default function Home() {
 
   const [isGridView, setIsGridView] = useState(false); // 뷰 모드 상태 (false: 1열 리스트, true: 2열 그리드)
 
-  useEffect(()=>{
+  useEffect(() => {
     const checkSubscription = async () => {
       // 저장된 구독 정보 가져오기 (혹은 서버에서 가져오기)
       const stored = localStorage.getItem("push-subscription");
@@ -45,7 +45,7 @@ export default function Home() {
       }
     };
     checkSubscription();
-  },[])
+  }, [])
 
   const testPush = async () => {
     // 저장된 구독 정보 가져오기 (혹은 서버에서 가져오기)
@@ -80,14 +80,14 @@ export default function Home() {
         <h1 className="text-lg font-semibold">오늘의 집</h1>
         <div className="flex items-center gap-4">
           <button aria-label="알림" className="text-gray-300 hover:text-white"
-          onClick={()=>{testPush()}}
+            onClick={() => { testPush() }}
           >
             🔔
           </button>
           <button
             aria-label="추가"
             className="text-gray-300 hover:text-white"
-            onClick={() => navigate("/m/add-device/scanqr")}
+            onClick={() => navigate("/m/devices")}
           >
             ＋
           </button>
@@ -100,17 +100,17 @@ export default function Home() {
           <div className="flex justify-end mb-2">
             <div className="flex bg-[#1E1E1E] rounded-lg p-1 gap-1">
               {/* 리스트 뷰 버튼 (1열) */}
-              <button 
+              <button
                 onClick={() => setIsGridView(false)}
                 className={`p-1.5 rounded ${!isGridView ? 'text-blue-500' : 'text-gray-500'}`}
               >
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 5.25h16.5m-16.5 13.5h16.5" />
-                  <rect x="3.75" y="8.25" width="16.5" height="7.5" rx="1" strokeWidth={2}/>
+                  <rect x="3.75" y="8.25" width="16.5" height="7.5" rx="1" strokeWidth={2} />
                 </svg>
               </button>
               {/* 그리드 뷰 버튼 (2열) */}
-              <button 
+              <button
                 onClick={() => setIsGridView(true)}
                 className={`p-1.5 rounded ${isGridView ? 'text-blue-500' : 'text-gray-500'}`}
               >
@@ -124,18 +124,18 @@ export default function Home() {
           {/* ✅ 메인 콘텐츠: 리스트/그리드 */}
           <div className={`grid gap-4 ${isGridView ? 'grid-cols-2' : 'grid-cols-1'}`}>
             {devices.map((device) => (
-              <Link 
+              <Link
                 to={`/m/device/${device.id}/live`}
-                key={device.id} 
+                key={device.id}
                 className="relative aspect-4/3 w-full rounded-2xl overflow-hidden bg-gray-800 group cursor-pointer"
               >
                 {/* 썸네일 이미지 */}
-                <img 
-                  src={device.thumbnail} 
-                  alt={device.name} 
+                <img
+                  src={device.thumbnail}
+                  alt={device.name}
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
-                
+
                 {/* 상단 오버레이 (와이파이, 메뉴) */}
                 <div className="absolute top-3 left-3 text-white drop-shadow-md">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
@@ -143,7 +143,7 @@ export default function Home() {
                   </svg>
                 </div>
                 <div className="absolute top-3 right-3 bg-black/40 backdrop-blur-sm rounded-full p-1 text-white"
-                onClick={(e)=>{e.stopPropagation();console.log('메뉴클릭')}}>
+                  onClick={(e) => { e.stopPropagation(); console.log('메뉴클릭') }}>
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM18.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
                   </svg>
@@ -161,7 +161,7 @@ export default function Home() {
         <main className="flex flex-1 items-center justify-center">
           <button
             className="bg-blue-600 px-5 py-2 rounded-full text-white font-medium active:scale-95 transition-transform"
-            onClick={() => {console.log('??');navigate("/m/add-device/scanqr")}}
+            onClick={() => { console.log('??'); navigate("/m/add-device/scanqr") }}
           >
             장치 추가
           </button>
