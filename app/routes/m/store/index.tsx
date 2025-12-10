@@ -1,6 +1,7 @@
 // app/routes/m/store/index.tsx
 import { useNavigate } from "react-router";
 import dummyDevices from "../dummyDevices.json"
+import type { HomeDevice } from "../home";
 
 // --- SVG 아이콘 컴포넌트들 ---
 const CloudNetworkIcon = () => (
@@ -57,13 +58,6 @@ const CartPlusIcon = () => (
     <path d="M14 8v4"></path>   {/* Plus sign vertical */}
   </svg>
 );
-
-export interface HomeDevice {
-  id: string;
-  name: string;
-  thumbnail: string;
-  status: "online" | "offline";
-}
 
 export function meta({ }) {
   return [

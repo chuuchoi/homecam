@@ -1,15 +1,8 @@
 // app/routes/m/records/index.tsx
 import { useEffect, useState } from "react";
 import { Link, useLoaderData, useNavigate } from "react-router";
-import { registerServiceWorker } from "~/utils/registerServiceWorker";
 import dummyDevices from "../dummyDevices.json"
-
-export interface HomeDevice {
-  id: string;
-  name: string;
-  thumbnail: string;
-  status: "online" | "offline";
-}
+import type { HomeDevice } from "../home";
 
 export function meta({ }) {
   return [

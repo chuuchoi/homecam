@@ -1,21 +1,27 @@
 // app/routes/m/records/$id.tsx
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
-import { useLoaderData, useNavigate } from "react-router";
+import { useLoaderData, useNavigate, useParams, type LoaderFunctionArgs } from "react-router";
 import moment from "moment";
 import dummyDevices from "../dummyDevices.json";
-import { BackIcon } from "~/components/icons";
+import { BackIcon, DownloadIcon, FilterIcon, FireEventIcon, MotionEventIcon, PersonEventIcon } from "~/components/icons";
+import { useQuery } from "@tanstack/react-query";
+import { getData } from "~/lib/axios";
+import type { ReplayEvent } from "~/api/device/$id/replay";
+import type { HomeDevice } from "../home";
 
-export interface HomeDevice {
-  id: string;
-  name: string;
-  thumbnail: string;
-  status: "online" | "offline";
-}
-
-export const loader = async () => {
-  const devices = dummyDevices;
-  return { devices } as { devices: HomeDevice[] };
+const Icons = {
+  ChevronDown: () => <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg>,
 };
+
+
+// ✅ Loader: 홈캠 데이터 가져오기
+export const loader = async ({ params }: LoaderFunctionArgs) => {
+  // 실제로는 DB나 API에서 가져올 데이터
+  const devices = dummyDevices
+  const device = devices.find((device) => device.id === params.id);
+  return { device } as { device: HomeDevice };
+};
+
 
 function getDaysInMonth(year: number, month: number) {
   return new Date(year, month, 0).getDate();
@@ -23,8 +29,16 @@ function getDaysInMonth(year: number, month: number) {
 
 export default function Records({ params }: { params: { id: string } }) {
   const navigate = useNavigate();
-  const { devices } = useLoaderData<typeof loader>();
+  const { device } = useLoaderData<typeof loader>();
+  const { id } = params;
   const [date, setDate] = useState(moment().format("YYYY-MM-DD"));
+
+  const { data } = useQuery({
+    queryKey: ["replay", id, date],
+    queryFn: () => getData(`/api/device/${id}/replay?date=${date}`),
+  });
+
+  const events = data?.events || [];
 
   // refs
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -63,7 +77,6 @@ export default function Records({ params }: { params: { id: string } }) {
     setVisible(true);
     // 빈 deps -> 마운트 시 1회만 실행
   }, []);
-
   // 2) date 변경 시(사용자 클릭 등) -> 부드럽게 스크롤
   useEffect(() => {
     if (!initialDone.current) return; // 초기 마운트 때는 이미 처리했으니 skip
@@ -99,7 +112,7 @@ export default function Records({ params }: { params: { id: string } }) {
       </header>
 
       <main className="flex flex-1 p-6 pt-2 flex-col overflow-auto">
-        <div className="flex items-center gap-2 relative">
+        <div className="flex items-center gap-2 relative justify-between">
           <label
             htmlFor="date"
             onClick={() => {
@@ -108,24 +121,32 @@ export default function Records({ params }: { params: { id: string } }) {
                 dateInput.showPicker?.();
               }
             }}
-            className="text-[#a0a0a0] text-[13px] font-medium ml-1 bg-neutral-500 p-4 cursor-pointer"
+            className="relative text-white text-sm font-medium ml-1 bg-transparent has-focus:bg-neutral-500/30 py-1.5 px-3 rounded-lg cursor-pointer"
           >
-            날짜: {date}
+            <div className="flex items-center gap-2">
+              {moment(date).format("M월 YYYY년")}
+              <Icons.ChevronDown />
+            </div>
+            <input
+              id="date"
+              type="date"
+              name="date"
+              onChange={(e) => setDate(e.target.value)}
+              className="pointer-events-none absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer"
+            />
           </label>
-          <input
-            id="date"
-            type="date"
-            name="date"
-            onChange={(e) => setDate(e.target.value)}
-            className="pointer-events-none absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer"
-          />
+
+          <div className="flex items-center gap-2">
+            <FilterIcon />
+            <DownloadIcon color="white" className="w-7 h-7" />
+          </div>
         </div>
 
         {/* containerRef를 달고, 초기에는 visibility:hidden -> 중앙 스크롤 셋팅 후 visible */}
         <div
           id="day-scroll"
           ref={containerRef}
-          className="relative bg-neutral-700 w-full h-20 overflow-auto mt-4 flex gap-2"
+          className="relative w-full overflow-auto flex gap-3"
           style={{ visibility: visible ? "visible" : "hidden" }}
         >
           <div className="min-w-[calc(50%-32px)]" />
@@ -137,8 +158,8 @@ export default function Records({ params }: { params: { id: string } }) {
                 ref={(el) => {
                   dayRefs.current[index] = el;
                 }}
-                className={`h-12 min-w-12 rounded-full flex items-center justify-center shadow-lg border border-white/10 z-10
-                   ${moment(date).date() === index + 1 ? "bg-blue-600" : "bg-blue-400/60"}`}
+                className={`h-10 min-w-10 rounded-full flex items-center justify-center shadow-lg z-10
+                   ${moment(date).date() === index + 1 ? "text-blue-600 font-bold" : "text-white/50"}`}
                 onClick={() =>
                   setDate(
                     `${moment(date).year()}-${String(moment(date).month() + 1).padStart(
@@ -155,6 +176,42 @@ export default function Records({ params }: { params: { id: string } }) {
 
           <div className="min-w-[calc(50%-32px)]" />
         </div>
+
+        {/* 이벤트 목록 */}
+        <div className="flex flex-col flex-1 gap-2 mt-5 overflow-auto">
+          {events.map((event: ReplayEvent) => {
+            let icon = <MotionEventIcon className="w-7 h-7" />;
+            if (event.eventType === 'person') icon = <PersonEventIcon className="w-7 h-7" />;
+            if (event.eventType === 'fire') icon = <FireEventIcon className="w-7 h-7" />;
+            return (
+              <div
+                key={event.id}
+                className="w-full flex  items-center justify-between"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="h-[-webkit-fill-available] flex flex-col gap-2 items-center">
+                    <div className="bg-blue-600 rounded-lg p-1">
+                      {icon}
+                    </div>
+                    <div className="bg-white/50 flex-1 w-px" />
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <span>{moment(event.startTime).format("HH:mm:ss")}</span>
+                    <span>{device.name}</span>
+                    <span>{event.label}</span>
+                  </div>
+                </div>
+                {/* 썸네일 이미지 */}
+                <img
+                  src={device.thumbnail}
+                  alt={device.name}
+                  className="w-2/5 aspect-video object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+              </div>
+            );
+          })}
+        </div>
+
       </main>
 
       <div className="h-16 w-full "></div>
