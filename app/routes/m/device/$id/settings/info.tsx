@@ -1,5 +1,5 @@
 // app/routes/m/device/$id/settings/info.tsx
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { BackIcon } from "~/components/icons";
 
 export function meta({ }) {
@@ -18,6 +18,7 @@ function ChevronRightIcon({ className }: { className?: string }) {
 }
 
 export default function DeviceInfo() {
+  const { id } = useParams();
   const navigate = useNavigate();
 
   return (
@@ -38,22 +39,22 @@ export default function DeviceInfo() {
         <div className="bg-[#1C1C1E] rounded-xl overflow-hidden divide-y divide-[#333333]">
           <InfoRow label="모델번호" value="Anna home Cam" />
           <InfoRow label="일련번호" value="T8410P4224211630" />
-          <InfoRow label="시스템 버전" value="2.3.1.6" hasArrow />
+          <InfoRow label="시스템 버전" value="2.3.1.6" hasArrow link={`/m/device/${id}/settings/info/version`} />
         </div>
 
         {/* 그룹 2: Wi-Fi */}
         <div className="bg-[#1C1C1E] rounded-xl overflow-hidden">
-          <InfoRow label="Wi-Fi" value="ANNA_2.4G" hasArrow />
+          <InfoRow label="Wi-Fi" value="ANNA_2.4G" hasArrow link={`/m/device/${id}/settings/info/wifi`} />
         </div>
 
         {/* 그룹 3: 저장소 */}
         <div className="bg-[#1C1C1E] rounded-xl overflow-hidden">
-          <InfoRow label="저장소" value="로컬 저장소" hasArrow />
+          <InfoRow label="저장소" value="로컬 저장소" hasArrow link={`/m/device/${id}/settings/info/storage`} />
         </div>
 
         {/* 그룹 4: 시간설정 */}
         <div className="bg-[#1C1C1E] rounded-xl overflow-hidden">
-          <InfoRow label="시간설정" value="GMT+9(서울)" hasArrow />
+          <InfoRow label="시간설정" value="GMT+9(서울)" hasArrow link={`/m/device/${id}/settings/info/time`} />
         </div>
 
         {/* 그룹 5: 네트워크 정보 (읽기 전용) */}
@@ -82,11 +83,14 @@ interface InfoRowProps {
   label: string;
   value: string;
   hasArrow?: boolean;
+  link?: string;
 }
 
-function InfoRow({ label, value, hasArrow = false }: InfoRowProps) {
+function InfoRow({ label, value, hasArrow = false, link }: InfoRowProps) {
+  const navigate = useNavigate();
   return (
-    <div className={`flex items-center justify-between p-4 ${hasArrow ? 'cursor-pointer active:bg-[#2c2c2e] transition-colors' : ''}`}>
+    <div className={`flex items-center justify-between p-4 ${hasArrow ? 'cursor-pointer active:bg-[#2c2c2e] transition-colors' : ''}`}
+      onClick={() => { if (link) navigate(link) }}>
       <span className="text-[15px] text-[#e5e5e5]">{label}</span>
       <div className="flex items-center gap-1">
         <span className="text-[#8E8E93] text-[15px]">{value}</span>

@@ -27,6 +27,12 @@ export default [
           route("streaming", "routes/m/device/$id/settings/streaming.tsx"),
           route("recording", "routes/m/device/$id/settings/recording.tsx"),
           route("info", "routes/m/device/$id/settings/info.tsx"),
+          ...prefix("info", [
+            route("storage", "routes/m/device/$id/settings/info/storage.tsx"),
+            route("time", "routes/m/device/$id/settings/info/time.tsx"),
+            route("version", "routes/m/device/$id/settings/info/version.tsx"),
+            route("wifi", "routes/m/device/$id/settings/info/wifi.tsx"),
+          ]),
         ]),
       ]),
       ...prefix("add-device", [
