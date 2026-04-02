@@ -9,10 +9,12 @@ export async function loginAction({ request }: ActionFunctionArgs)
   const formData = await request.formData();
   const id = formData.get("id");
   const password = formData.get("password");
-
+  
   if (!id || !password) {
     return { message: "아이디와 비밀번호를 입력해주세요." }
   }
+  // DB not yet, so just check if id and password are provided
+  return await authenticateUser(id, password);
 
   try {
     const [rows] = await pool.execute("SELECT * FROM users WHERE id = ?", [id]);
@@ -37,4 +39,19 @@ export async function loginAction({ request }: ActionFunctionArgs)
   } catch (err: any) {
     return { success: false, message: "서버 오류 발생: " + err.message }
   }
+}
+
+const authenticateUser = async (id: FormDataEntryValue, password: FormDataEntryValue) => {
+  const token = generateToken({id:"123123", email:"user.email", phone:"user.phone", profile:"user.profile"});
+
+  // ✅ 관리자면 /admin 으로 리디렉션
+  // const redirectTo = "user.id" === "123123" ? "/admin" : "/";
+
+  return new Response(null, {
+      status: 302,
+      headers: {
+        "Set-Cookie": `token=${token}; HttpOnly; Path=/; Max-Age=86400; SameSite=Lax`,
+        Location: "/admin",
+      },
+  });
 }
